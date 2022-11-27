@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Temple University Interactive Schedule Spring 2023</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+</head>
+<style>
+
+.sidebar {
+  position: absolute;
+  left: 0px;
+  width: 250px;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  padding: 20px;
+  font-size: 16px;
+  border: solid;
+  background-color: #add8e6;
+}
+.main-heading {
+    font-size: 15px;
+}
+</style>
+<body>
+  <div class="sidebar">
+  <font color="#3D9970"><center><h2 id="main-heading" >Spring 2023 Schedule </h2></center></font>
+  <div>
+
+<div class="row">
+  <div class="column">
+    <center> <img src="images/DLC logo.png" alt="DLC Logo" style="width:60%"> </center>
+  </div>
+  <font color="MidnightBlue"><center><h3> I love interactive maps!</h3></center></font>
+  </div>
+
+<h3> Contact <em>your</em> strike captain  </h3>
+<h5> Click the polygon  </h5>
+
+    <div id="map" style=" position: fixed; right: 0; left: 300px; top: 0; bottom: 0 "></div>
+    <!-- JS IMPORTS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+   <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src= "http://leaflet.github.io/Leaflet.heat/dist/leaflet-heat.js"></script>
+    <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src= "js/setup.js"></script>
+    <script src= "js/tyler.js"></script>
+
+    <script>
+
+// Create a style variable
+    var myStyle = {
+    radius: 5,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.7
+};
+
+// Load in geojson
+
+var tyler =   L.geoJSON(tyler, {
+          style: myStyle
+        }).bindPopup(function (layer) {
+       return "Name: " + layer.feature.properties.name + " " + "<br>" +
+       "Class: " + "<br>" +
+       "TA: " + "<br>" +
+       "Class Start: " + "<br>" +
+       "Class End: " + "<br>" +
+       "Class Size: "
+
+    }).addTo(map).bringToBack();
+
+    </script>
+
+
+</body>
+</html>
