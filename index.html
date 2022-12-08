@@ -20,7 +20,7 @@
   padding: 20px;
   font-size: 16px;
   border: solid;
-  background-color: #add8e6;
+  background-color: lightblue;
 }
 .main-heading {
     font-size: 15px;
@@ -34,12 +34,6 @@
 <div class="row">
   <div class="column">
     <center> <img src="images/DLC logo.png" alt="DLC Logo" style="width:60%"> </center>
-  </div>
-  <font color="MidnightBlue"><center><h3> I love interactive maps!</h3></center></font>
-  </div>
-
-<h3> Contact <em>your</em> strike captain  </h3>
-<h5> Click the polygon  </h5>
 
     <div id="map" style=" position: fixed; right: 0; left: 300px; top: 0; bottom: 0 "></div>
     <!-- JS IMPORTS -->
@@ -49,7 +43,7 @@
     <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src= "js/setup.js"></script>
-    <script src= "js/tyler.js"></script>
+    <script src= "js/TU.js"></script>
     <script>
 
 // Create a style variable
@@ -64,11 +58,11 @@
 
 // Load in geojson
 
-var tyler =   L.geoJSON(tyler, {
+var TU =   L.geoJSON(TU, {
           style: myStyle
         }).bindPopup(function (layer) {
-       return "Name: " + layer.feature.properties.name + " " + "<br>" +
-       "Class: " + "<br>" +
+       return "Name: " + layer.feature.properties.BuildingNa + " " + "<br>" +
+       "Discipline: " + layer.feature.properties.Discipline + " " + "<br>" +
        "TA: " + "<br>" +
        "Class Start: " + "<br>" +
        "Class End: " + "<br>" +
