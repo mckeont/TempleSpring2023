@@ -1,6 +1,6 @@
 var map = L.map('map', {
   center: [39.983219999796114, -75.15356557830536],
-  zoom: 18,
+  zoom: 16,
 });
 
 var Satellite = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
