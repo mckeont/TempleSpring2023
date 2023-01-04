@@ -43,7 +43,7 @@
     <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src= "js/setup.js"></script>
-    <script src= "js/TU.js"></script>
+    <script src= "js/tu_jan3.js"></script>
     <script>
 
 // Create a style variable
@@ -58,15 +58,13 @@
 
 // Load in geojson
 
-var TU =   L.geoJSON(TU, {
+var tu_jan3 =   L.geoJSON(tu_jan3, {
           style: myStyle
         }).bindPopup(function (layer) {
-       return "Name: " + layer.feature.properties.BuildingNa + " " + "<br>" +
-       "Discipline: " + layer.feature.properties.Discipline + " " + "<br>" +
-       "TA: " + "<br>" +
-       "Class Start: " + "<br>" +
-       "Class End: " + "<br>" +
-       "Class Size: "
+       return "Name: " + layer.feature.properties.landuse + " " + "<br>" +
+       "Address: " + layer.feature.properties.ADDRESS + " " + "<br>" +
+       "Student size: " + layer.feature.properties.Students + " " + "<br>" +
+       "Type: " + layer.feature.properties.PARCEL_I_1 + " " + "<br>" 
 
     }).addTo(map).bringToBack();
 
