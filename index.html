@@ -9,7 +9,12 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 </head>
 <style>
-
+/* .legend-square {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  float: left;
+} */
 .sidebar {
   position: absolute;
   left: 0px;
@@ -29,11 +34,12 @@
 <body>
   <div class="sidebar">
   <font color="#3D9970"><center><h2 id="main-heading" >Spring 2023 Schedule </h2></center></font>
+  <h3><center>Toggle layers topright. Choose date and time <center></h3>
   <div>
 
 <div class="row">
   <div class="column">
-    <center> <img src="images/DLC logo.png" alt="DLC Logo" style="width:60%"> </center>
+    <center> <img src="images/legend.png" alt="DLC Logo" style="width:60%"> </center>
 
     <div id="map" style=" position: fixed; right: 0; left: 300px; top: 0; bottom: 0 "></div>
     <!-- JS IMPORTS -->
@@ -43,33 +49,217 @@
     <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src= "js/setup.js"></script>
-    <script src= "js/tu_jan19.js"></script>
+    <script src= "js/FM.js"></script>
+    <script src= "js/FA.js"></script>
+    <script src= "js/ThA.js"></script>
+    <script src= "js/ThM.js"></script>
+    <script src= "js/WA.js"></script>
+    <script src= "js/WM.js"></script>
+    <script src= "js/tuM.js"></script>
+    <script src= "js/tuA.js"></script>
+    <script src= "js/MM.js"></script>
+    <script src= "js/MA.js"></script>
+    <script src= "js/tuA.js"></script>
+    <script src= "js/tuM.js"></script>
+    <script src= "js/WM.js"></script>
+    <script src= "js/WA.js"></script>
+    <script src= "js/ThM.js"></script>
+    <script src= "js/ThA.js"></script>
+    <script src= "js/FM.js"></script>
+    <script src= "js/FA.js"></script>
     <script>
+  var MM = L.geoJson(MM, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var MA = L.geoJson(MA, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var tuM = L.geoJson(tuM, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var tuA = L.geoJson(tuA, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var WM = L.geoJson(WM, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var WA = L.geoJson(WA, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var ThM = L.geoJson(ThM, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var ThA = L.geoJson(ThA, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var FM = L.geoJson(FM, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
+  var FA = L.geoJson(FA, {
+    style: styleFunc,
+    onEachFeature: function(feature, layer){
+      layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomFeature
+      });
+      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
+        + "Student size: " + feature.properties.size + " " + "<br>"
+        +   "CRN: " + feature.properties.CRN);
+    }
+  });
 
-// Create a style variable
-    var myStyle = {
-    radius: 5,
-    fillColor: "#ff7800",
-    color: "#000",
-    weight: 1,
-    opacity: 1,
-    fillOpacity: 0.7
-};
+  var baseLayers = {
+    'Monday Morning': MM,
+    'Monday Afternoon': MA,
+    'Tuesday Morning': tuM,
+    'Tuesday Afternoon': tuM,
+    'Wednesday Morning': WM,
+    'Wednesday Afternoon': WM,
+    'Thursday Morning': ThM,
+    'Thursday Afternoon': ThA,
+    'Friday Morning': FM,
+    'Friday Afternoon': FA,
+  };
 
-// Load in geojson
+  // Add the layer control to the map
+  L.control.layers(baseLayers).addTo(map);
 
-var tu_jan19 =   L.geoJSON(tu_jan19, {
-          style: myStyle
-        }).bindPopup(function (layer) {
-       return "Name: " + layer.feature.properties.landuse + " " + "<br>" +
-       "Address: " + layer.feature.properties.ADDRESS + " " + "<br>" +
-       "Student size: " + layer.feature.properties.Students + " " + "<br>" +
-       "Type: " + layer.feature.properties.PARCEL_I_1 + " " + "<br>"
+  function resetHighlight(e) {
+    MM.resetStyle(e.target);
+  }
 
-    }).addTo(map).bringToBack();
+  function zoomFeature(e){
+    console.log(e.target.getBounds());
+    map.fitBounds(e.target.getBounds().pad(1.5));
+  }
 
-    </script>
+  function highlightFeature(e){
+    var layer = e.target;
 
+    layer.setStyle({
+      weight: 5,
+      color: '#696',
+      dashArray: '',
+      fillOpacity: 0.7
+    });
+    // for different web browsers
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+      layer.bringToFront();
+    }
+  }
 
+  // Add Scale Bar to Map
+  L.control.scale({position: 'topleft'}).addTo(map);
+  function setColorFunc(size) {
+        return size > 40 ? '#800026' :
+          size > 30 ? '#BD0026' :
+          size > 25  ? '#E31A1C' :
+          size > 15  ? '#FC4E2A' :
+          size > 10  ? '#FD8D3C' :
+          '#FEB24C';
+      };
+    function styleFunc(feature) {
+      return {
+        fillColor: setColorFunc(feature.properties.size),
+        fillOpacity: 0.9,
+        weight: 1,
+        opacity: 1,
+        color: '#ffffff',
+        dashArray: '3',
+        zIndexOffset: -500
+      };
+    }
+  </script>
 </body>
 </html>
