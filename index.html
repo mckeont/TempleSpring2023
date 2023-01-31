@@ -19,25 +19,14 @@
   left: 50%;
   transform: translateX(-50%);
   font-weight: bold;
-  font-size: 40px;
+  font-size: 60px;
   text-shadow: 2px 2px 2px white;
   z-index: 100;
   text-align: center;
 }
 .building-label {
-  background-color: rgba(255, 255, 255, 0.8);
-  color: rgba(0, 0, 0, 0.8);
-  font-size: 13px;
+  font-size: 20px;
   padding: 2px 4px;
-}
-#legend {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  background: white;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 #color-key {
@@ -57,6 +46,13 @@
   );
 }
 #legend {
+  position: absolute;
+  bottom: 25px;
+  right: 25px;
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   /* align-items: flex-start; */
@@ -65,13 +61,12 @@
 #legend span {
   display: block;
   margin-top: 10px;
-  font-size: 12px;
+  font-size: 40px;
 }
 
 #legend span:first-of-type {
   margin-top: 0;
 }
-
 } */
 </style>
 <body>
@@ -84,27 +79,27 @@
     <div id="legend" style="position: absolute; bottom: 20px; right: 20px;">
       <div style="display: flex;">
         <div style="width: 20px; height: 20px; background-color: #800026;"></div>
-        <div style="margin-left: 10px;"> > 1000</div>
+        <div style="margin-left: 10px;"> > 1500</div>
       </div>
       <div style="display: flex;">
         <div style="width: 20px; height: 20px; background-color: #BD0026;"></div>
-        <div style="margin-left: 10px;"> > 600</div>
+        <div style="margin-left: 10px;"> > 1000</div>
       </div>
       <div style="display: flex;">
         <div style="width: 20px; height: 20px; background-color: #E31A1C;"></div>
-        <div style="margin-left: 10px;"> > 300</div>
+        <div style="margin-left: 10px;"> > 600</div>
       </div>
       <div style="display: flex;">
         <div style="width: 20px; height: 20px; background-color: #FC4E2A;"></div>
-        <div style="margin-left: 10px;"> > 100</div>
+        <div style="margin-left: 10px;"> > 300</div>
       </div>
       <div style="display: flex;">
         <div style="width: 20px; height: 20px; background-color: #FD8D3C;"></div>
-        <div style="margin-left: 10px;"> > 10</div>
+        <div style="margin-left: 10px;"> > 100</div>
       </div>
       <div style="display: flex;">
         <div style="width: 20px; height: 20px; background-color: #FEB24C;"></div>
-        <div style="margin-left: 10px;"> <= 10</div>
+        <div style="margin-left: 10px;"> <= 100</div>
       </div>
       <h4> Students </h4>
     </div>
@@ -146,7 +141,7 @@
 
     legend.onAdd = function (map) {
       var div = L.DomUtil.create('div', 'info legend'),
-          sizes = [0, 10, 100, 300, 600, 1000],
+          sizes = [0, 100, 300, 600, 1000, 1500],
           labels = [];
       for (var i = 0; i < sizes.length; i++) {
         div.innerHTML +=
@@ -161,13 +156,14 @@
   // Add Scale Bar to Map
         L.control.scale({position: 'topleft'}).addTo(map);
         function setColorFunc(size) {
-              return size > 1000 ? '#800026' :
-                size > 600 ? '#BD0026' :
-                size > 300  ? '#E31A1C' :
-                size > 100  ? '#FC4E2A' :
-                size > 10  ? '#FD8D3C' :
+              return size > 1500 ? '#800026' :
+                size > 1000 ? '#BD0026' :
+                size > 600  ? '#E31A1C' :
+                size > 300  ? '#FC4E2A' :
+                size > 100  ? '#FD8D3C' :
                 '#FEB24C';
             };
+
 
         function styleFunc(feature) {
           return {
@@ -189,22 +185,21 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=2000523013\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
        });
-
-
 
     var fridayMorningLayer = L.geoJSON(fridayMorningData, {
       style: styleFunc,
@@ -215,16 +210,17 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=1631742572\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
@@ -239,21 +235,21 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=967538336\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
        });
-
 
     var thursdayMorningLayer = L.geoJSON(thursdayMorningData, {
       style: styleFunc,
@@ -264,20 +260,22 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=2078209232\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
        });
+
     var wednesdayAfternoonLayer = L.geoJSON(wednesdayAfternoonData, {
       style: styleFunc,
       onEachFeature: function(feature, layer){
@@ -287,21 +285,21 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=780620119\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
        });
-
 
     var wednesdayMorningLayer = L.geoJSON(wednesdayMorningData, {
       style: styleFunc,
@@ -312,20 +310,23 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=1335184781\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
        });
+
+
 
     var tuesdayAfternoonLayer = L.geoJSON(tuesdayAfternoonData, {
       style: styleFunc,
@@ -336,16 +337,17 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=501335819\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
@@ -361,16 +363,17 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=340051690\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
@@ -385,21 +388,21 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=1333253646\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
        });
-
 
     var mondayMorningLayer = L.geoJSON(mondayMorningData, {
       style: styleFunc,
@@ -410,16 +413,17 @@
           click: zoomFeature
         });
         layer.bindPopup("<div style='font-size:20px'>"
-        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
-        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
-        + "</div>"
-        );
+                +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+                + "<strong>More Info:</strong>" + "<a href=\"https://docs.google.com/spreadsheets/d/1nsyf30-PFTmoEqtUDelCseYmiFetYSahyJFoNjEx5jk/edit#gid=317453195\"> Click Here</a>" + " " + "<br>"
+                + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+                + "</div>"
+                );
        layer.bindTooltip(feature.properties.building, {
        permanent: true,
        direction: "center",
        className: "building-label",
        opacity: 0.9,
-       backgroundColor: "#ffffff",
+       backgroundColor: null,
        textColor: "#000000"
        });
        }
@@ -447,46 +451,16 @@
     document.querySelector("#selectedLayer").innerText = currentLayerName;
   });
 
-  function resetHighlight(e) {
-    mondayAfternoonLayer.resetStyle(e.target);
-  }
+var dayLayers = [mondayAfternoonLayer, mondayMorningLayer,
+  tuesdayAfternoonLayer,tuesdayMorningLayer,
+   wednesdayAfternoonLayer, wednesdayMorningLayer, thursdayMorningLayer,
+   thursdayAfternoonLayer,fridayMorningLayer, fridayAfternoonLayer];
 
-  function resetHighlight(e) {
-    mondayMorningLayer.resetStyle(e.target);
-  }
-
-
-  function resetHighlight(e) {
-    tuesdayAfternoonLayer.resetStyle(e.target);
-  }
-
-  function resetHighlight(e) {
-    tuesdayMorningLayer.resetStyle(e.target);
-  }
-
-
-  function resetHighlight(e) {
-    wednesdayAfternoonLayer.resetStyle(e.target);
-  }
-
-  function resetHighlight(e) {
-    wednesdayMorningLayer.resetStyle(e.target);
-  }
-
-  function resetHighlight(e) {
-    thursdayMorningLayer.resetStyle(e.target);
-  }
-
-  function resetHighlight(e) {
-    thursdayAfternoonLayer.resetStyle(e.target);
-  }
-
-  function resetHighlight(e) {
-    fridayMorningLayer.resetStyle(e.target);
-  }
-  function resetHighlight(e) {
-    fridayAfternoonLayer.resetStyle(e.target);
-  }
+function resetHighlight(e) {
+    for (var i = 0; i < dayLayers.length; i++) {
+        dayLayers[i].resetStyle(e.target);
+    }
+}
 
   function zoomFeature(e){
     console.log(e.target.getBounds());
