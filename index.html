@@ -9,39 +9,105 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 </head>
 <style>
-/* .legend-square {
-  width: 20px;
-  height: 20px;
-  margin-right: 8px;
-  float: left;
-} */
-.sidebar {
-  position: absolute;
-  left: 0px;
-  width: 250px;
-  top: 0;
-  bottom: 0;
-  overflow-y: auto;
-  padding: 20px;
-  font-size: 16px;
-  border: solid;
-  background-color: lightblue;
-}
+
 .main-heading {
     font-size: 15px;
 }
+#selectedLayer {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: bold;
+  font-size: 40px;
+  text-shadow: 2px 2px 2px white;
+  z-index: 100;
+  text-align: center;
+}
+.building-label {
+  background-color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.8);
+  font-size: smaller;
+  padding: 2px 4px;
+}
+#legend {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  background: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+#color-key {
+  height: 150px;
+  width: 20px;
+  margin-left: 20px;
+  border-left: 2px solid #333;
+}
+#color-key {
+  background: linear-gradient(to top,
+    #FEB24C,
+    #FD8D3C,
+    #FC4E2A,
+    #E31A1C,
+    #BD0026,
+    #800026
+  );
+}
+#legend {
+  display: flex;
+  flex-direction: column;
+  /* align-items: flex-start; */
+}
+
+#legend span {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+#legend span:first-of-type {
+  margin-top: 0;
+}
+
+} */
 </style>
 <body>
-  <div class="sidebar">
-  <font color="#3D9970"><center><h2 id="main-heading" >Spring 2023 Schedule </h2></center></font>
-  <h3><center>Toggle layers topright. Choose date and time <center></h3>
-  <div>
 
-<div class="row">
-  <div class="column">
-    <center> <img src="images/legend.png" alt="DLC Logo" style="width:60%"> </center>
 
-    <div id="map" style=" position: fixed; right: 0; left: 300px; top: 0; bottom: 0 "></div>
+    <div id="map" style=" position: fixed; right: 0; left: 0px; top: 0; bottom: 0 "></div>
+    <div id="map"></div>
+    <div id="selectedLayer">Monday Morning</div>
+
+    <div id="legend" style="position: absolute; bottom: 20px; right: 20px;">
+      <div style="display: flex;">
+        <div style="width: 20px; height: 20px; background-color: #800026;"></div>
+        <div style="margin-left: 10px;"> > 1000</div>
+      </div>
+      <div style="display: flex;">
+        <div style="width: 20px; height: 20px; background-color: #BD0026;"></div>
+        <div style="margin-left: 10px;"> > 600</div>
+      </div>
+      <div style="display: flex;">
+        <div style="width: 20px; height: 20px; background-color: #E31A1C;"></div>
+        <div style="margin-left: 10px;"> > 300</div>
+      </div>
+      <div style="display: flex;">
+        <div style="width: 20px; height: 20px; background-color: #FC4E2A;"></div>
+        <div style="margin-left: 10px;"> > 100</div>
+      </div>
+      <div style="display: flex;">
+        <div style="width: 20px; height: 20px; background-color: #FD8D3C;"></div>
+        <div style="margin-left: 10px;"> > 10</div>
+      </div>
+      <div style="display: flex;">
+        <div style="width: 20px; height: 20px; background-color: #FEB24C;"></div>
+        <div style="margin-left: 10px;"> <= 10</div>
+      </div>
+      <h4> Students </h4>
+    </div>
     <!-- JS IMPORTS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
@@ -49,204 +115,377 @@
     <script src='https://npmcdn.com/@turf/turf/turf.min.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
     <script src= "js/setup.js"></script>
-    <script src= "js/FM.js"></script>
-    <script src= "js/FA.js"></script>
-    <script src= "js/ThA.js"></script>
-    <script src= "js/ThM.js"></script>
-    <script src= "js/WA.js"></script>
-    <script src= "js/WM.js"></script>
-    <script src= "js/tuM.js"></script>
-    <script src= "js/tuA.js"></script>
-    <script src= "js/MM.js"></script>
-    <script src= "js/MA.js"></script>
-    <script src= "js/tuA.js"></script>
-    <script src= "js/tuM.js"></script>
-    <script src= "js/WM.js"></script>
-    <script src= "js/WA.js"></script>
-    <script src= "js/ThM.js"></script>
-    <script src= "js/ThA.js"></script>
-    <script src= "js/FM.js"></script>
-    <script src= "js/FA.js"></script>
+    <script src= "js/data.js"></script>
     <script>
-  var MM = L.geoJson(MM, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
+
+
+    function getDataForDayAndTime(data, day, time) {
+      var filteredData = {"type":"FeatureCollection","features":[]};
+
+      for (var i = 0; i < data.features.length; i++) {
+        if (data.features[i].properties.day === day && data.features[i].properties.time2 === time) {
+          filteredData.features.push(data.features[i]);
+        }
+      }
+
+      return filteredData;
     }
-  });
-  var MA = L.geoJson(MA, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
-  var tuM = L.geoJson(tuM, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
-  var tuA = L.geoJson(tuA, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
-  var WM = L.geoJson(WM, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
-  var WA = L.geoJson(WA, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
-  var ThM = L.geoJson(ThM, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
-  var ThA = L.geoJson(ThA, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
-  var FM = L.geoJson(FM, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
-  var FA = L.geoJson(FA, {
-    style: styleFunc,
-    onEachFeature: function(feature, layer){
-      layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomFeature
-      });
-      layer.bindPopup("Name: " + feature.properties.building + " " + "<br>"
-        + "Student size: " + feature.properties.size + " " + "<br>"
-        + "Start:  "+ feature.properties.start + " " + "<br>"
-        + "End: " + feature.properties.end + " " + "<br>"
-        + "Course: " +feature.properties.course_name+ " " + "<br>"
-        +   "CRN: " + feature.properties.CRN);
-    }
-  });
+
+    var fridayAfternoonData = getDataForDayAndTime(data, "Friday", "Afternoon");
+    var fridayMorningData = getDataForDayAndTime(data, "Friday", "Morning");
+    var thursdayAfternoonData = getDataForDayAndTime(data, "Thursday", "Afternoon");
+    var thursdayMorningData = getDataForDayAndTime(data, "Thursday", "Morning");
+    var wednesdayAfternoonData = getDataForDayAndTime(data, "Wednesday", "Afternoon");
+    var wednesdayMorningData = getDataForDayAndTime(data, "Wednesday", "Morning");
+    var tuesdayAfternoonData = getDataForDayAndTime(data, "Tuesday", "Afternoon");
+    var tuesdayMorningData = getDataForDayAndTime(data, "Tuesday", "Morning");
+    var mondayAfternoonData = getDataForDayAndTime(data, "Monday", "Afternoon");
+    var mondayMorningData = getDataForDayAndTime(data, "Monday", "Morning");
+
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+      var div = L.DomUtil.create('div', 'info legend'),
+          sizes = [0, 10, 100, 300, 600, 1000],
+          labels = [];
+      for (var i = 0; i < sizes.length; i++) {
+        div.innerHTML +=
+          '<i style="background:' + setColorFunc(sizes[i] + 1) + '"></i> ' +
+          sizes[i] + (sizes[i + 1] ? '&ndash;' + sizes[i + 1] + '<br>' : '+');
+      }
+      return div;
+    };
+
+    legend.addTo(map);
+
+  // Add Scale Bar to Map
+        L.control.scale({position: 'topleft'}).addTo(map);
+        function setColorFunc(size) {
+              return size > 1000 ? '#800026' :
+                size > 600 ? '#BD0026' :
+                size > 300  ? '#E31A1C' :
+                size > 100  ? '#FC4E2A' :
+                size > 10  ? '#FD8D3C' :
+                '#FEB24C';
+            };
+
+        function styleFunc(feature) {
+          return {
+            fillColor: setColorFunc(feature.properties.total_size),
+            fillOpacity: 0.9,
+            weight: 1,
+            opacity: 1,
+            color: '#ffffff',
+            dashArray: '3'
+          };
+        }
+
+    var fridayAfternoonLayer = L.geoJSON(fridayAfternoonData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+
+
+
+    var fridayMorningLayer = L.geoJSON(fridayMorningData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+
+    var thursdayAfternoonLayer = L.geoJSON(thursdayAfternoonData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+
+
+    var thursdayMorningLayer = L.geoJSON(thursdayMorningData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+    var wednesdayAfternoonLayer = L.geoJSON(wednesdayAfternoonData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+
+
+    var wednesdayMorningLayer = L.geoJSON(wednesdayMorningData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+
+    var tuesdayAfternoonLayer = L.geoJSON(tuesdayAfternoonData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+
+
+    var tuesdayMorningLayer = L.geoJSON(tuesdayMorningData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+
+    var mondayAfternoonLayer = L.geoJSON(mondayAfternoonData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       });
+
+
+    var mondayMorningLayer = L.geoJSON(mondayMorningData, {
+      style: styleFunc,
+      onEachFeature: function(feature, layer){
+        layer.on({
+          mouseover: highlightFeature,
+          mouseout: resetHighlight,
+          click: zoomFeature
+        });
+        layer.bindPopup("<div style='font-size:20px'>"
+        +  "<strong>Building:</strong> " + feature.properties.building + " " + "<br>"
+        + "<strong>Students:</strong> " + feature.properties.total_size + " " + "<br>"
+        + "</div>"
+        );
+       layer.bindTooltip(feature.properties.building, {
+       permanent: true,
+       direction: "center",
+       className: "building-label",
+       opacity: 0.9,
+       backgroundColor: "#ffffff",
+       textColor: "#000000"
+       });
+       }
+       }).addTo(map);
 
   var baseLayers = {
-    'Monday Morning': MM,
-    'Monday Afternoon': MA,
-    'Tuesday Morning': tuM,
-    'Tuesday Afternoon': tuM,
-    'Wednesday Morning': WM,
-    'Wednesday Afternoon': WM,
-    'Thursday Morning': ThM,
-    'Thursday Afternoon': ThA,
-    'Friday Morning': FM,
-    'Friday Afternoon': FA,
+    'Monday Morning': mondayMorningLayer,
+    'Monday Afternoon': mondayAfternoonLayer,
+    'Tuesday Morning': tuesdayAfternoonLayer,
+    'Tuesday Afternoon': tuesdayMorningLayer,
+    'Wednesday Morning': wednesdayMorningLayer,
+    'Wednesday Afternoon': wednesdayAfternoonLayer,
+    'Thursday Morning': thursdayMorningLayer,
+    'Thursday Afternoon': thursdayAfternoonLayer,
+    'Friday Morning': fridayMorningLayer,
+    'Friday Afternoon': fridayAfternoonLayer,
   };
+  L.control.layers(baseLayers, {}, {collapsed:false, activeBaseLayer: mondayMorningLayer}).addTo(map);
 
-  // Add the layer control to the map
-  L.control.layers(baseLayers).addTo(map);
+  var currentLayerName = Object.keys(baseLayers)[0];
+  document.querySelector("#selectedLayer").innerText = currentLayerName;
+
+  map.on("baselayerchange", function(e) {
+    currentLayerName = e.name;
+    document.querySelector("#selectedLayer").innerText = currentLayerName;
+  });
 
   function resetHighlight(e) {
-    MM.resetStyle(e.target);
+    mondayAfternoonLayer.resetStyle(e.target);
+  }
+
+  function resetHighlight(e) {
+    mondayMorningLayer.resetStyle(e.target);
+  }
+
+
+  function resetHighlight(e) {
+    tuesdayAfternoonLayer.resetStyle(e.target);
+  }
+
+  function resetHighlight(e) {
+    tuesdayMorningLayer.resetStyle(e.target);
+  }
+
+
+  function resetHighlight(e) {
+    wednesdayAfternoonLayer.resetStyle(e.target);
+  }
+
+  function resetHighlight(e) {
+    wednesdayMorningLayer.resetStyle(e.target);
+  }
+
+  function resetHighlight(e) {
+    thursdayMorningLayer.resetStyle(e.target);
+  }
+
+  function resetHighlight(e) {
+    thursdayAfternoonLayer.resetStyle(e.target);
+  }
+
+  function resetHighlight(e) {
+    fridayMorningLayer.resetStyle(e.target);
+  }
+  function resetHighlight(e) {
+    fridayAfternoonLayer.resetStyle(e.target);
   }
 
   function zoomFeature(e){
@@ -269,27 +508,6 @@
     }
   }
 
-  // Add Scale Bar to Map
-  L.control.scale({position: 'topleft'}).addTo(map);
-  function setColorFunc(size) {
-        return size > 40 ? '#800026' :
-          size > 30 ? '#BD0026' :
-          size > 25  ? '#E31A1C' :
-          size > 15  ? '#FC4E2A' :
-          size > 10  ? '#FD8D3C' :
-          '#FEB24C';
-      };
-    function styleFunc(feature) {
-      return {
-        fillColor: setColorFunc(feature.properties.size),
-        fillOpacity: 0.9,
-        weight: 1,
-        opacity: 1,
-        color: '#ffffff',
-        dashArray: '3',
-        zIndexOffset: -500
-      };
-    }
   </script>
 </body>
 </html>
