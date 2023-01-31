@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
 </head>
 <style>
-
 .main-heading {
     font-size: 15px;
 }
@@ -28,7 +27,6 @@
   font-size: 20px;
   padding: 2px 4px;
 }
-
 #color-key {
   height: 150px;
   width: 20px;
@@ -55,23 +53,18 @@
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
-  /* align-items: flex-start; */
 }
-
 #legend span {
   display: block;
   margin-top: 10px;
   font-size: 40px;
 }
-
 #legend span:first-of-type {
   margin-top: 0;
 }
 } */
 </style>
 <body>
-
-
     <div id="map" style=" position: fixed; right: 0; left: 0px; top: 0; bottom: 0 "></div>
     <div id="map"></div>
     <div id="selectedLayer">Monday Morning</div>
@@ -112,8 +105,6 @@
     <script src= "js/setup.js"></script>
     <script src= "js/data.js"></script>
     <script>
-    //Easter Egg
-     console.log("This map is designed to locate the food truck with the least amount of foot traffic. Delicious! - tpm")
 
     function getDataForDayAndTime(data, day, time) {
       var filteredData = {"type":"FeatureCollection","features":[]};
@@ -123,7 +114,6 @@
           filteredData.features.push(data.features[i]);
         }
       }
-
       return filteredData;
     }
 
@@ -164,7 +154,6 @@
                 size > 100  ? '#FD8D3C' :
                 '#FEB24C';
             };
-
 
         function styleFunc(feature) {
           return {
@@ -251,6 +240,8 @@
        });
        }
        });
+       //Easter Egg
+        console.log("This map is designed to locate the food truck with the least amount of foot traffic. Delicious! - tpm")
 
     var thursdayMorningLayer = L.geoJSON(thursdayMorningData, {
       style: styleFunc,
@@ -327,8 +318,6 @@
        }
        });
 
-
-
     var tuesdayAfternoonLayer = L.geoJSON(tuesdayAfternoonData, {
       style: styleFunc,
       onEachFeature: function(feature, layer){
@@ -353,7 +342,6 @@
        });
        }
        });
-
 
     var tuesdayMorningLayer = L.geoJSON(tuesdayMorningData, {
       style: styleFunc,
@@ -452,10 +440,9 @@
     document.querySelector("#selectedLayer").innerText = currentLayerName;
   });
 
-var dayLayers = [mondayAfternoonLayer, mondayMorningLayer,
-  tuesdayAfternoonLayer,tuesdayMorningLayer,
-   wednesdayAfternoonLayer, wednesdayMorningLayer, thursdayMorningLayer,
-   thursdayAfternoonLayer,fridayMorningLayer, fridayAfternoonLayer];
+var dayLayers = [mondayAfternoonLayer, mondayMorningLayer,tuesdayAfternoonLayer,tuesdayMorningLayer,
+                 wednesdayAfternoonLayer, wednesdayMorningLayer, thursdayMorningLayer,
+                 thursdayAfternoonLayer,fridayMorningLayer, fridayAfternoonLayer];
 
 function resetHighlight(e) {
     for (var i = 0; i < dayLayers.length; i++) {
