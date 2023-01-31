@@ -464,6 +464,7 @@ function resetHighlight(e) {
 
   function zoomFeature(e){
     console.log(e.target.getBounds());
+    console.log("This map is meant to find the least busy food truck. YUM!  - tpm")
     map.fitBounds(e.target.getBounds().pad(1.5));
   }
 
@@ -481,7 +482,7 @@ function resetHighlight(e) {
       layer.bringToFront();
     }
   }
-console.log("This map is meant to find the least busy food truck. YUM!  - tpm")
+
   </script>
 </body>
 </html>
